@@ -1,9 +1,6 @@
 # 1151VIS-HW2：互動探索台灣的人口結構變化（Vue 3 + D3.js 動態視覺化）
 
 - 學號／姓名：414085208／曾辰哲
-- GitHub：https://github.com/Irving0522/1151VIS-HW2-414085208-TsengChenChe
-- 執行錄影：[images/demo.gif](images/demo.gif)
-- 延續 HW1：https://github.com/Irving0522/1151VIS-HW1-414085208-TsengChenChe
 
 ## 1. 專案截圖
 
@@ -23,7 +20,15 @@
 
 ![年度比較](images/screenshot-compare.png)
 
-## 2. 主題與資料
+## 2. GitHub 連結
+
+- HW2 repository：https://github.com/Irving0522/1151VIS-HW2-414085208-TsengChenChe
+- 執行錄影 GIF：[images/demo.gif](images/demo.gif)
+- 延續的 HW1：https://github.com/Irving0522/1151VIS-HW1-414085208-TsengChenChe
+
+## 3. 主題、資料與使用技術
+
+### 3-1. 主題與資料
 
 **主題：** HW1 用靜態圖呈現台灣少子化與高齡化的長期趨勢。HW2 在同一份資料上加入兩種動態互動，讓使用者可以自己探索：
 
@@ -37,7 +42,7 @@
 | 出生數及粗出生率按登記及發生.xls（工作表「全國(登記)」） | 每年出生數、粗出生率 | 1958–2025 |
 | 人口年齡結構指標.xls | 各年齡層人口數與比例 | 1974–2025 |
 
-## 3. 使用技術
+### 3-2. 使用技術
 
 | 技術 | 用途 |
 |---|---|
@@ -47,9 +52,11 @@
 
 **Vue 與 D3 的分工：** D3 負責「計算」和「刷選互動」，Vue 負責把 SVG「畫出來」。動畫的做法是：用 D3 把數值從舊值補間到新值，每一個畫面都更新 Vue 的響應式資料，Vue 再自動重畫 SVG。
 
-## 4. 動態效果的實作方式
+## 4. 說明製作流程和相關操作
 
-### 4-1. 補間動畫工具 `useTween`（`src/composables/useTween.js`）
+### 4-1. 製作流程：動態效果的實作方式
+
+#### (1) 補間動畫工具 `useTween`（`src/composables/useTween.js`）
 兩種動態效果共用這個工具：
 
 1. 用 `watch` 監聽目標值，例如刷選範圍或年度比例。
@@ -58,7 +65,7 @@
 4. Vue 偵測到 `ref` 改變，就重畫圖表，形成動畫。
    - 注意：`d3.interpolate` 處理陣列時會重複使用同一個輸出物件，必須複製一份，Vue 才偵測得到變化。
 
-### 4-2. 刷選放大（`BrushOverview.vue` + `LineChart.vue`）
+#### (2) 刷選放大（`BrushOverview.vue` + `LineChart.vue`）
 
 | 步驟 | 做法 |
 |---|---|
@@ -68,7 +75,7 @@
 | 主圖 | 兩張 `LineChart` 都接收 `viewDomain`，比例尺、刻度、標註跟著更新；用 `clipPath` 裁掉框外的線 |
 | 取消 | 按「顯示全部」，或點總覽圖的空白處；外部清除時用 `brush.move` 同步移除選取框 |
 
-### 4-3. 年度比較長條圖（`AgeCompareChart.vue`）
+#### (3) 年度比較長條圖（`AgeCompareChart.vue`）
 
 | 步驟 | 做法 |
 |---|---|
@@ -78,12 +85,12 @@
 | 版面 | `d3.scaleBand` 做兩層分組（年齡層 → A／B），每組下方標出「B − A」差了幾個百分點 |
 | 連動 | 選中的 A、B 年份會在上方兩張折線圖畫出垂直線，同步顯示 |
 
-### 4-4. 沿用 HW1 的功能
+#### (4) 沿用 HW1 的功能
 - 資料清理：用 D3 讀取 Excel 另存的原始 CSV，自動判斷編碼、民國年換算、依年份合併（`src/utils/population.js`）。
 - 兩張圖同步的 hover 提示框。
 - 門檻線（7%／14%／20%）與重要年份標註，都由資料計算，不寫死。
 
-## 5. 執行方式與相關操作
+### 4-2. 相關操作：執行方式與互動說明
 
 需要先安裝 [Node.js](https://nodejs.org/)（建議 20 以上的版本）。
 
@@ -101,14 +108,14 @@ npm run dev        # 啟動開發伺服器，打開終端機顯示的網址（�
 | 設定比較年份 | 拖曳「年份 A／年份 B」滑桿，或直接點擊折線圖（設為年份 B） |
 | 檢查資料 | 按 F12 開啟 Console，可以看到最後三年的資料表 |
 
-## 6. GitHub 上傳與分享流程
+### 4-3. GitHub 上傳與分享流程
 
 1. **建立 repository：** 名稱設為 `1151VIS-HW2-414085208-TsengChenChe`，Visibility 選 Public，`.gitignore` 選 HTML。
 2. **上傳專案：** 把專案資料夾中除了 `node_modules`、`dist` 以外的所有檔案上傳，然後 Commit。
 3. **分享給老師：** Settings → Collaborators → Add people，輸入 `cchu.fju@gmail.com`。
 4. **執行與錄影：** 執行 `npm run dev`，錄下刷選放大、年份比較等關鍵操作。
 
-## 7. 檔案結構
+### 4-4. 檔案結構
 
 ```
 1151VIS-HW2-414085208-TsengChenChe/
