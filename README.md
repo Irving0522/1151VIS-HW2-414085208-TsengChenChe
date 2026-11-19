@@ -23,6 +23,7 @@
 ## 2. GitHub 連結
 
 - HW2 repository：https://github.com/Irving0522/1151VIS-HW2-414085208-TsengChenChe
+- GitHub Pages 線上展示：https://irving0522.github.io/1151VIS-HW2-414085208-TsengChenChe/
 - 執行錄影 GIF：[images/demo.gif](images/demo.gif)
 - 延續的 HW1：https://github.com/Irving0522/1151VIS-HW1-414085208-TsengChenChe
 
